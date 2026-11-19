@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>En la Misma Vía · Portal interno (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#002060;--navy2:#0B2E78;--red:#C8102E;--yellow:#F2B705;--green:#2E9E4F;--gray:#7A8599;--bg:#F4F6FA;--line:#DDE3EE;--ink:#1B2333;--soft:#EEF2FA}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:Montserrat,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.45}
+.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh;background:linear-gradient(to right,var(--navy) 250px,var(--bg) 250px)}
+nav{background:var(--navy);color:#fff;padding:20px 14px;position:sticky;top:0;height:100vh;overflow:auto}
+.logo{padding:0 8px 16px;border-bottom:1px solid rgba(255,255,255,.15);margin-bottom:12px}
+.logo b{display:block;font-size:19px;font-weight:800;letter-spacing:.2px}
+.logo b span{color:var(--yellow)}
+.logo small{display:block;font-size:10.5px;opacity:.7;letter-spacing:1.4px;text-transform:uppercase;margin-top:4px;line-height:1.4}
+.ng{font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;opacity:.55;margin:14px 8px 6px;font-weight:700}
+nav a{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;padding:9px 10px;border-radius:9px;font-weight:600;font-size:13.5px;opacity:.88}
+nav a:hover{background:rgba(255,255,255,.08);opacity:1}
+nav a.on{background:#fff;color:var(--navy);opacity:1}
+nav a i{font-style:normal;width:22px;height:22px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;background:rgba(255,255,255,.14);flex:none}
+nav a.on i{background:var(--red);color:#fff}
+.navfoot{font-size:11px;opacity:.6;margin:22px 8px 0;line-height:1.5}
+main{min-width:0}
+.top{background:#fff;border-bottom:1px solid var(--line);padding:16px 28px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.top h1{margin:0;font-size:22px;font-weight:800;color:var(--navy)}
+.top .crumb{font-size:12px;color:var(--gray);font-weight:600}
+.top .sp{flex:1}
+.road{height:8px;background:#2b2b2b;position:relative}
+.road:after{content:"";position:absolute;left:0;right:0;top:3px;border-top:2px dashed var(--yellow)}
+.wrap{padding:22px 28px 40px;max-width:1400px}
+.note{background:#FFF6D6;border:1px solid #F2D27A;border-radius:10px;padding:10px 14px;margin-bottom:16px;font-size:13px}
+.hide{display:none!important}
+.btn{font:inherit;font-weight:700;border:0;border-radius:10px;padding:9px 15px;cursor:pointer;font-size:13px}
+.btn.pri{background:var(--red);color:#fff}.btn.nav{background:var(--navy);color:#fff}
+.btn.sec{background:#fff;color:var(--navy);border:2px solid var(--navy)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}.g5{grid-template-columns:repeat(5,minmax(0,1fr))}
+.box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.box h3{margin:0 0 4px;font-size:16px;color:var(--navy);font-weight:800}
+.box h4{margin:12px 0 6px;font-size:13.5px;color:var(--navy);font-weight:800}
+.box p{margin:4px 0}
+.muted{color:var(--gray);font-size:12.5px}
+.hero{background:linear-gradient(120deg,var(--navy),var(--navy2));color:#fff;border-radius:16px;padding:24px 26px;position:relative;overflow:hidden}
+.hero h2{margin:0 0 6px;font-size:26px;font-weight:800}
+.hero p{margin:0;max-width:760px;opacity:.9}
+.hero .tag{background:var(--red);color:#fff;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:800;display:inline-block;margin-bottom:10px;letter-spacing:.5px}
+.tramo{border-top:5px solid var(--red);cursor:pointer;transition:transform .1s}
+.tramo:hover{transform:translateY(-2px)}
+.tramo .n{font-size:11px;font-weight:800;color:var(--red);letter-spacing:1px}
+.kpi b{display:block;font-size:26px;font-weight:800;color:var(--navy)}
+.kpi span{font-size:12px;color:var(--gray);display:block}
+.pill{display:inline-block;font-size:11px;font-weight:700;border-radius:6px;padding:2px 8px;background:var(--soft);color:var(--navy)}
+.pill.g{background:#E3F4E8;color:#1E6B35}.pill.r{background:#FBE3E7;color:var(--red)}.pill.y{background:#FFF3CC;color:#8A6A00}
+table.t{width:100%;border-collapse:collapse;font-size:13px}
+table.t th{background:var(--navy);color:#fff;text-align:left;padding:8px 10px;font-weight:700;font-size:12px}
+table.t td{border-bottom:1px solid var(--line);padding:8px 10px;vertical-align:top}
+table.t tr:nth-child(even) td{background:#FAFBFD}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{font:inherit;font-weight:600;border:2px solid var(--line);background:#fff;color:var(--navy);border-radius:20px;padding:6px 14px;cursor:pointer;font-size:13px}
+.chip.on{background:var(--navy);border-color:var(--navy);color:#fff}
+label.l{display:block;font-weight:700;font-size:12.5px;color:var(--navy);margin:10px 0 4px}
+input.i,select.i,textarea.i{width:100%;font:inherit;padding:8px 11px;border:2px solid var(--line);border-radius:10px;background:#fff}
+textarea.i{min-height:70px;resize:vertical}
+.err{color:var(--red);font-size:12.5px;min-height:16px;margin-top:6px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.agenda{display:grid;gap:8px}
+.ag{display:grid;grid-template-columns:62px 1fr;gap:12px;align-items:start;background:var(--soft);border-radius:10px;padding:10px 12px}
+.ag b.m{background:var(--navy);color:#fff;border-radius:8px;text-align:center;padding:6px 0;font-size:12px}
+.ag em{display:block;font-style:normal;color:#444;font-size:12.5px;margin-top:3px}
+.ag q{display:block;color:var(--navy);font-style:italic;font-size:12.5px;margin-top:4px}
+/* peaje board */
+.board{display:grid;grid-template-columns:repeat(5,minmax(180px,1fr));gap:12px;align-items:start}
+.col{background:#fff;border-radius:14px;border:1px solid var(--line)}
+.col h2{margin:0;font-size:13.5px;font-weight:800;padding:11px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line)}
+.col h2 .dot{width:13px;height:13px;border-radius:50%}
+.col h2 .n{margin-left:auto;background:var(--bg);border-radius:10px;padding:1px 8px;font-size:12px}
+.list{padding:9px;display:flex;flex-direction:column;gap:9px}
+.card{border:1px solid var(--line);border-left:6px solid var(--gray);border-radius:10px;padding:9px 11px;background:#fff;cursor:pointer}
+.card:hover{box-shadow:0 3px 10px rgba(0,32,96,.08)}
+.card.estudio{border-left-color:var(--yellow)}.card.verde{border-left-color:var(--green)}.card.rojo{border-left-color:var(--red)}.card.hecha{border-left-color:var(--navy)}
+.card .tt{font-weight:600;line-height:1.35;font-size:13px}
+.card .m{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.card .r{font-size:12px;color:#444;margin-top:6px}
+.tg{font-size:10.5px;font-weight:600;background:var(--bg);color:var(--navy);border-radius:6px;padding:2px 6px}
+.tg.alert{background:var(--red);color:#fff}.tg.ok{background:#E3F4E8;color:#1E6B35}
+.empty{color:var(--gray);font-size:12px;text-align:center;padding:14px 6px}
+/* signs */
+.signs{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.sg{text-align:center}
+.shape{margin:0 auto 8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800}
+.oct{width:96px;height:96px;background:var(--red);clip-path:polygon(30% 0,70% 0,100% 30%,100% 70%,70% 100%,30% 100%,0 70%,0 30%);font-size:18px}
+.tri{width:112px;height:98px;background:var(--yellow);clip-path:polygon(0 0,100% 0,50% 100%);color:var(--navy);font-size:12px;line-height:1.15;text-align:center;padding-bottom:40px}
+.dia{width:78px;height:78px;background:var(--yellow);transform:rotate(45deg);margin:9px auto 17px}
+.dia span{transform:rotate(-45deg);color:var(--navy);font-size:12px}
+.cir{width:96px;height:96px;border-radius:50%;background:var(--green);font-size:15px;line-height:1.1;text-align:center}
+.sg p{font-size:12.5px;margin:0}
+/* passport */
+.pass{background:var(--navy);color:#fff;border-radius:16px;padding:18px 20px}
+.pass h3{color:#fff}
+.bar{height:14px;background:rgba(255,255,255,.18);border-radius:8px;overflow:hidden;margin:12px 0 6px}
+.bar div{height:100%;background:var(--yellow)}
+.hitos{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.hito{background:rgba(255,255,255,.1);border-radius:10px;padding:8px;font-size:11.5px}
+.hito.ok{background:var(--yellow);color:var(--navy)}
+.hito b{display:block;font-size:14px}
+.ind{border-left:6px solid var(--gray)}
+.ind.ok{border-left-color:var(--green)}.ind.no{border-left-color:var(--red)}
+.ind b.v{font-size:28px;font-weight:800;color:var(--navy);display:block}
+/* modal */
+.ov{position:fixed;inset:0;background:rgba(0,20,60,.45);display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto;z-index:10}
+.ov.on{display:flex}
+.md{background:#fff;border-radius:16px;width:min(560px,100%);padding:22px 24px}
+.md h3{margin:0 0 4px;font-size:19px;color:var(--navy);font-weight:800}
+.md .act{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+.states{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.st{border:2px solid var(--line);border-radius:10px;padding:8px 6px;text-align:center;font-weight:700;font-size:12px;cursor:pointer;background:#fff;font-family:inherit}
+.st i{display:block;width:15px;height:15px;border-radius:50%;margin:0 auto 4px}
+.st.on{border-color:var(--navy);background:var(--soft)}
+.st:disabled{opacity:.35;cursor:not-allowed}
+.hist{background:var(--bg);border-radius:10px;padding:9px 12px;font-size:12.5px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:10px;font-weight:600;display:none;z-index:20}
+.ep{display:flex;gap:12px;align-items:flex-start;border-bottom:1px solid var(--line);padding:12px 0}
+.ep:last-child{border:0}
+.ep .play{width:42px;height:42px;border-radius:50%;background:var(--red);color:#fff;border:0;font-size:15px;cursor:pointer;flex:none}
+.ep .play:disabled{background:var(--gray);cursor:not-allowed}
+.cal{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.cal .d{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;border-top:5px solid var(--navy)}
+.cal .d b{font-size:15px;color:var(--navy);display:block}
+@media(max-width:1100px){.app{grid-template-columns:1fr;background:var(--bg)}nav{position:static;height:auto}.g4,.g5,.cal{grid-template-columns:repeat(2,1fr)}.board{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:1fr}}
+@media(max-width:640px){.g2,.g4,.g5,.cal,.board,.signs,.row2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<nav id="nav"></nav>
+<main>
+  <div class="top"><div><div class="crumb" id="crumb"></div><h1 id="title"></h1></div><div class="sp"></div><div id="topact"></div></div>
+  <div class="road"></div>
+  <div class="wrap">
+    <div class="note hide" id="demo">Prototipo: la información que registres se guarda solo en este navegador. <button class="btn sec" id="bReset" style="padding:3px 10px;font-size:12px;margin-left:8px">Restablecer datos de ejemplo</button></div>
+    <div class="note hide" id="ro">Puedes consultar el portal, pero tu nivel de acceso no permite registrar información.</div>
+    <div id="view"></div>
+  </div>
+</main>
+</div>
+<div class="ov" id="ov"><div class="md" id="md"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- constantes ---------- */
+const FRENTES=["Mina","Planta de asfalto","Obras","Oficinas"];
+const TEMAS=["Seguridad","Cuidado de equipos","Procesos y productividad","Bienestar","Nuevos proyectos de urbanismo"];
+const CANALES=["Encuentro Kilómetro Cero","Nota de voz","Buzón","Portal"];
+const MOTIVOS=["Seguridad","Cuidado de los equipos","Ayuda a otros","Idea de mejora"];
+const EST={peaje:{n:"En el peaje",c:"var(--gray)"},estudio:{n:"En estudio",c:"var(--yellow)"},verde:{n:"Vía libre",c:"var(--green)"},rojo:{n:"No viable",c:"var(--red)"},hecha:{n:"Implementada",c:"var(--navy)"}};
+const ORDER=["peaje","estudio","verde","rojo","hecha"];
+const DIAS_ENC={"Mina":1,"Planta de asfalto":2,"Obras":3,"Oficinas":4}; // lunes..jueves de la primera semana
+const HITOS=[{km:50,t:"Mención en Radio Vía y carta de la gerencia"},{km:100,t:"Almuerzo con la gerencia y la junta directiva"},{km:200,t:"Día de la familia en la obra o curso certificado"},{km:300,t:"Su nombre en la placa de un proyecto nuevo"}];
+const VIEWS=[
+ {id:"inicio",n:"Inicio",i:"⌂",g:""},
+ {id:"kilometro-cero",n:"Encuentro Kilómetro Cero",i:"1",g:"Tramo 1"},
+ {id:"radio-via",n:"Radio Vía",i:"1",g:"Tramo 1"},
+ {id:"peaje",n:"Peaje de Ideas",i:"1",g:"Tramo 1"},
+ {id:"cambio-de-casco",n:"Cambio de Casco",i:"2",g:"Tramo 2"},
+ {id:"junta",n:"Junta de la Vía",i:"3",g:"Tramo 3"},
+ {id:"kilometros",n:"Kilómetros Murcia",i:"4",g:"Tramo 4"},
+ {id:"encuestas",n:"Encuestas",i:"✎",g:"Seguimiento"},
+ {id:"indicadores",n:"Indicadores",i:"%",g:"Seguimiento"}
+];
+const RADIO=[
+ {f:"Semana 3 · noviembre",t:"Cuentas claras y primeras ideas en verde",g:"Buenos días, equipo. Les habla la gerencia con la Radio Vía de esta semana. Así va la empresa: seguimos preparando la propuesta para el primer parque industrial y esta semana revisamos los planos con la Junta de la Vía. Las cuentas claras: la nómina de la primera quincena se pagará el viernes; sabemos que el retraso del mes pasado afectó a muchas familias y por eso les contamos la fecha real. Respondemos al aire: la idea de señalizar el retorno de volquetas en la mina ya es una realidad, gracias al conductor que la propuso. Kilómetros de la semana: felicitaciones a quienes más fichas recibieron por cuidar los equipos. Nos vemos en la vía."},
+ {f:"Semana 2 · noviembre",t:"Así arranca En la Misma Vía",g:"Buenos días. Esta es la primera Radio Vía. Cada semana, en tres minutos, les vamos a contar cómo va la empresa, cuándo se paga, qué pasó con sus ideas y a quién reconocieron sus compañeros. Si tienen una pregunta, respondan con una nota de voz y la contestamos aquí. El primer encuentro Kilómetro Cero será en cada frente durante la primera semana del mes. Nos vemos en la vía."}
+];
+const JUNTA=[
+ {fr:"Mina",a:"Operario de cargue (24 años en la empresa)",b:"Ayudante de mina (2 años)"},
+ {fr:"Planta de asfalto",a:"Operador de planta (18 años)",b:"Laboratorista (3 años)"},
+ {fr:"Obras",a:"Operador de motoniveladora (21 años)",b:"Auxiliar de topografía (1 año)"},
+ {fr:"Oficinas",a:"Auxiliar contable (15 años)",b:"Asistente de compras (2 años)"}
+];
+const MOJONES=[{p:"Operario de mina",a:20,fr:"Mina"},{p:"Conductor de volqueta",a:15,fr:"Obras"},{p:"Operador de planta",a:10,fr:"Planta de asfalto"},{p:"Auxiliar contable",a:5,fr:"Oficinas"}];
+
+/* ---------- estado ---------- */
+let D={ideas:[],actas:[],bitacoras:[],recomendaciones:[],fichas:[]}, CFG={};
+let db=null, demo=false, canWrite=true, canAdmin=true, tts=null, view="inicio", sub={};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const today=()=>iso(new Date());
+const days=(a,b)=>Math.round((new Date((b||today())+"T12:00:00")-new Date(a+"T12:00:00"))/864e5);
+const fmt=d=>d?new Date(d+"T12:00:00").toLocaleDateString("es-CO",{day:"numeric",month:"short"}):"";
+const fmtL=d=>new Date(d+"T12:00:00").toLocaleDateString("es-CO",{weekday:"long",day:"numeric",month:"long"});
+const mes=d=>(d||today()).slice(0,7);
+const norm=s=>String(s||"").trim().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+function toast(t){const e=$("toast");e.textContent=t;e.style.display="block";clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display="none",2600)}
+const opts=(a,sel)=>a.map(x=>`<option${x===sel?" selected":""}>${esc(x)}</option>`).join("");
+
+/* ---------- navegación ---------- */
+function drawNav(){
+  let h=`<div class="logo"><b>En la Misma <span>Vía</span></b><small>Portal interno · prototipo<br>Murcia Construcciones S.A.S.</small></div>`;let g=null;
+  VIEWS.forEach(v=>{if(v.g!==g){g=v.g;if(g)h+=`<div class="ng">${g}</div>`}h+=`<a href="#${v.id}" class="${v.id===view?"on":""}"><i>${v.i}</i>${v.n}</a>`});
+  h+=`<div class="navfoot">Prototipo académico de MAVES Consulting. Los datos cargados son ejemplos ilustrativos.</div>`;
+  $("nav").innerHTML=h;
+}
+function route(){const h=location.hash.slice(1);view=VIEWS.some(v=>v.id===h)?h:"inicio";drawNav();render();window.scrollTo(0,0)}
+window.addEventListener("hashchange",route);
+
+function render(){
+  const v=VIEWS.find(x=>x.id===view);
+  $("crumb").textContent=v.g||"MAVES Consulting · Prototipo";$("title").textContent=v.id==="inicio"?"Bienvenido a En la Misma Vía":v.n;
+  $("topact").innerHTML="";
+  ({inicio:vInicio,"kilometro-cero":vKm0,"radio-via":vRadio,peaje:vPeaje,"cambio-de-casco":vCasco,junta:vJunta,kilometros:vKm,encuestas:vEnc,indicadores:vInd})[view]();
+}
+
+/* ---------- fechas de encuentros ---------- */
+function encuentroDe(fr,ym){ // primer lunes..jueves del mes
+  const [y,m]=ym.split("-").map(Number);const d=new Date(y,m-1,1);
+  while(d.getDay()!==1)d.setDate(d.getDate()+1);
+  d.setDate(d.getDate()+DIAS_ENC[fr]-1);return iso(d);
+}
+function nextYm(){const d=new Date();d.setDate(1);d.setMonth(d.getMonth()+1);return iso(d).slice(0,7)}
+function proximoEnc(fr){const e=encuentroDe(fr,mes());return e>=today()?e:encuentroDe(fr,nextYm())}
+
+/* ---------- indicadores ---------- */
+function vencida(i){return i.estado==="peaje"&&days(i.fechaIngreso)>15}
+function kmDe(nombre){
+  const n=norm(nombre);if(!n)return 0;
+  return D.fichas.filter(f=>norm(f.para)===n).length*10+D.ideas.filter(i=>!i.anonima&&norm(i.autor)===n&&(i.estado==="verde"||i.estado==="hecha")).length*20;
+}
+function personas(){const s=new Map();D.fichas.forEach(f=>{s.set(norm(f.para),{n:f.para,fr:f.frentePara})});D.ideas.forEach(i=>{if(!i.anonima&&i.autor&&!s.has(norm(i.autor)))s.set(norm(i.autor),{n:i.autor,fr:i.frente})});return [...s.values()].map(p=>({...p,km:kmDe(p.n)})).sort((a,b)=>b.km-a.km)}
+function indicadores(){
+  const I=D.ideas, debian=I.filter(i=>i.fechaRespuesta||vencida(i)), aT=I.filter(i=>i.fechaRespuesta&&days(i.fechaIngreso,i.fechaRespuesta)<=15);
+  const pct=(a,b)=>b?Math.round(a/b*100):null;
+  const m=mes(); const dadores=new Set(D.fichas.filter(f=>mes(f.fecha)===m).map(f=>norm(f.de))).size;
+  const total=Number(CFG.totalTrabajadores)||170;
+  const rec=D.recomendaciones, recDec=rec.filter(r=>r.estado!=="analisis");
+  const inicio=CFG.inicioPrograma||D.actas.map(a=>mes(a.fecha)).sort()[0]||mes();
+  const trimestre=[0,1,2].map(k=>{const d=new Date();d.setDate(1);d.setMonth(d.getMonth()-k);return iso(d).slice(0,7)}).filter(ym=>ym>=inicio);
+  const actasTri=new Set(D.actas.filter(a=>trimestre.includes(mes(a.fecha))).map(a=>a.frente+mes(a.fecha))).size;
+  const progTri=trimestre.reduce((s,ym)=>s+FRENTES.filter(fr=>encuentroDe(fr,ym)<=today()).length,0);
+  const dif=(a,b)=>(a!=null&&a!==""&&b!=null&&b!=="")?Number(a)-Number(b):null;
+  return [
+    {n:"Respuesta oportuna a ideas",v:pct(aT.length,debian.length),u:" %",meta:90,f:"Ideas respondidas en 15 días o menos / ideas que ya debían tener respuesta",src:"Peaje de Ideas",fr:"Mensual"},
+    {n:"Ideas implementadas",v:pct(I.filter(i=>i.estado==="hecha").length,I.length),u:" %",meta:25,f:"Ideas implementadas / ideas recibidas",src:"Peaje de Ideas",fr:"Trimestral"},
+    {n:"Revisión técnico-mecánica del liderazgo",v:dif(CFG.liderazgoActual,CFG.liderazgoBase),u:" p. p.",meta:15,f:"Variación de respuestas favorables frente a la línea base",src:"Formulario B.2",fr:"Semestral",extra:CFG.liderazgoActual?`${CFG.liderazgoActual} % favorable (base ${CFG.liderazgoBase||"–"} %)`:"Registrar resultados en Encuestas"},
+    {n:"Percepción de escucha y reconocimiento",v:dif(CFG.climaActual,CFG.climaBase),u:" p. p.",meta:15,f:"Variación de respuestas favorables frente a la línea base",src:"Formulario B.1",fr:"Trimestral",extra:CFG.climaActual?`${CFG.climaActual} % favorable (base ${CFG.climaBase||"–"} %)`:"Registrar resultados en Encuestas"},
+    {n:"Participación en Kilómetros Murcia",v:pct(dadores,total),u:" %",meta:60,f:`Personas que entregaron fichas este mes / ${total} trabajadores`,src:"Kilómetros Murcia",fr:"Mensual"},
+    {n:"Influencia de la Junta de la Vía",v:pct(rec.filter(r=>r.estado==="incorporada").length,recDec.length),u:" %",meta:30,f:"Recomendaciones incorporadas / recomendaciones con decisión",src:"Junta de la Vía",fr:"Trimestral"},
+    {n:"Cumplimiento del encuentro Kilómetro Cero",v:pct(actasTri,progTri),u:" %",meta:90,f:"Encuentros con acta en el trimestre / encuentros programados a la fecha",src:"Actas del Kilómetro Cero",fr:"Trimestral"}
+  ];
+}
+
+/* ---------- vistas ---------- */
+function vInicio(){
+  const ind=indicadores();const ven=D.ideas.filter(vencida).length;
+  const tr=[["kilometro-cero","Tramo 1","Kilómetro Cero, Radio Vía y Peaje de Ideas","Encuentro mensual de 30 minutos en cada frente, nota de voz semanal de la gerencia y un semáforo para todas las ideas."],["cambio-de-casco","Tramo 2","Cambio de Casco","Cada directivo pasa una jornada al mes en un frente con un Maestro de Vía. Señales de tránsito en el comité."],["junta","Tramo 3","Junta de la Vía","Ocho trabajadores elegidos por sus compañeros asesoran a la gerencia en los proyectos de urbanismo."],["kilometros","Tramo 4","Kilómetros Murcia","Fichas de peaje entre compañeros que suman kilómetros y se convierten en reconocimientos no monetarios."]];
+  $("view").innerHTML=`
+  <div class="hero"><span class="tag">PORTAL INTERNO · PROTOTIPO</span><h2>Dirección y frentes, en la misma vía</h2><p>Aquí está todo lo que necesitas para participar: cuándo es el próximo encuentro de tu frente, qué dijo la gerencia esta semana, qué pasó con tu idea, a quién puedes reconocer y cómo vamos.</p></div>
+  <div class="grid g4" style="margin-top:16px">${tr.map(t=>`<div class="box tramo" data-go="${t[0]}"><div class="n">${t[1].toUpperCase()}</div><h3>${t[2]}</h3><p class="muted">${t[3]}</p></div>`).join("")}</div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="box"><h3>Próximos encuentros Kilómetro Cero</h3><p class="muted">30 minutos al inicio de la jornada, primera semana de cada mes.</p>
+      <table class="t" style="margin-top:8px"><tr><th>Frente</th><th>Fecha</th><th>Hora</th></tr>${FRENTES.map(fr=>`<tr><td>${fr}</td><td>${fmtL(proximoEnc(fr))}</td><td>${fr==="Oficinas"?"7:30 a. m.":"6:30 a. m."}</td></tr>`).join("")}</table></div>
+    <div class="box"><h3>Radio Vía de esta semana</h3><p class="muted">${esc(RADIO[0].f)}</p><h4>${esc(RADIO[0].t)}</h4><p style="font-size:13px">${esc(RADIO[0].g.slice(0,260))}…</p><p style="margin-top:10px"><a class="btn nav" href="#radio-via" style="text-decoration:none;display:inline-block">Ir a Radio Vía</a></p></div>
+  </div>
+  <div class="grid g4" style="margin-top:16px">
+    <div class="box kpi"><b>${D.ideas.length}</b><span>Ideas en el Peaje</span></div>
+    <div class="box kpi"><b style="color:${ven?"var(--red)":"var(--navy)"}">${ven}</b><span>Ideas con más de 15 días sin respuesta</span></div>
+    <div class="box kpi"><b>${D.fichas.length}</b><span>Fichas de peaje entregadas</span></div>
+    <div class="box kpi"><b>${ind[6].v??"–"}${ind[6].v!=null?" %":""}</b><span>Encuentros realizados en el trimestre</span></div>
+  </div>`;
+  document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>location.hash=b.dataset.go);
+}
+
+function vKm0(){
+  const m=mes();
+  $("topact").innerHTML=`<button class="btn pri" id="bActa">+ Registrar acta</button>`;
+  $("bActa").onclick=formActa;
+  const ag=[["0–5","Arranque seguro","El Maestro de Vía y el equipo revisan los riesgos del mes, el estado de los equipos y cómo llegan las personas.","¿Qué riesgo vemos este mes en el frente y qué equipo necesita revisión?"],
+  ["5–11","Así va la empresa","El directivo que hace su Cambio de Casco en el frente ese mes cuenta en persona cómo va la empresa y responde preguntas.","Les cuento cómo vamos y qué viene. Pregunten lo que quieran: lo que no sepa responder, lo contestamos en Radio Vía."],
+  ["11–17","Peaje de Ideas","Se revisan en el portal las ideas del frente que cambiaron de color y se registran las nuevas, sin discutirlas.","Estas son las respuestas a sus ideas. ¿Quién trae una nueva? Aquí no se discute: se registra y en 15 días tiene respuesta."],
+  ["17–23","La pregunta del mes","Una pregunta del banco y una ronda corta, empezando por quienes menos hablan.","Hoy la pregunta es… Quiero escuchar primero a quienes casi no hablan."],
+  ["23–27","Kilómetros del mes","Se reconoce en público a quienes recibieron más fichas y a quienes alcanzaron una meta o un mojón.","Este mes sus compañeros reconocieron a… ¿Alguien más quiere entregar una ficha y decir por qué?"],
+  ["27–30","Cierre","Máximo tres compromisos con responsable y fecha. Se revisan los del mes anterior y el copiloto registra el acta.","Nos llevamos estos compromisos. El próximo mes revisamos si los cumplimos. Que todos volvamos completos a casa."]];
+  const banco=["¿Qué es lo que más les gusta de trabajar en este frente?","¿Qué nos hizo perder más tiempo el mes pasado?","¿En qué situación se han sentido en riesgo este mes?","¿Qué necesita este frente para trabajar mejor?","Con lo que sabemos hacer, ¿cómo podemos aportar a los proyectos de urbanismo?","¿Qué cambiarían del Kilómetro Cero para que sea más útil?"];
+  const actas=[...D.actas].sort((a,b)=>a.fecha<b.fecha?1:-1);
+  $("view").innerHTML=`
+  <div class="cal">${FRENTES.map(fr=>{const f=encuentroDe(fr,m);const a=D.actas.find(x=>x.frente===fr&&mes(x.fecha)===m);return `<div class="d"><span class="muted">${fr}</span><b>${fmtL(f)}</b><span class="muted">${fr==="Oficinas"?"7:30":"6:30"} a. m. · 30 min</span><div style="margin-top:8px">${a?`<span class="pill g">Acta registrada</span>`:f<today()?`<span class="pill r">Sin acta</span>`:`<span class="pill">Programado</span>`}</div></div>`}).join("")}</div>
+  <div class="grid g2" style="margin-top:16px;align-items:start">
+    <div class="box"><h3>Protocolo del encuentro</h3><p class="muted">Una vez al mes en cada frente, de pie, en un punto de encuentro seguro. Conductor: jefe del frente. Copiloto: un trabajador distinto cada mes. Lo acompañan el Maestro de Vía y el directivo del Cambio de Casco.</p>
+      <div class="agenda" style="margin-top:10px">${ag.map(a=>`<div class="ag"><b class="m">${a[0]}</b><div><b>${a[1]}</b><em>${a[2]}</em><q>${a[3]}</q></div></div>`).join("")}</div></div>
+    <div>
+      <div class="box"><h3>Reglas de la vía</h3><p>1. Habla una persona a la vez. 2. Nadie es sancionado por lo que dice. 3. Las ideas no se discuten: se registran y tienen respuesta en 15 días. 4. Se empieza y se termina a tiempo. 5. Lo que se promete se revisa el mes siguiente.</p></div>
+      <div class="box" style="margin-top:16px"><h3>Banco de preguntas del mes</h3><ol style="margin:6px 0 0 18px;padding:0">${banco.map(b=>`<li style="margin:3px 0">${b}</li>`).join("")}</ol></div>
+      <div class="box" style="margin-top:16px"><h3>Actas registradas</h3>${actas.length?`<table class="t" style="margin-top:8px"><tr><th>Fecha</th><th>Frente</th><th>Asist.</th><th>Compromisos</th></tr>${actas.map(a=>`<tr><td>${fmt(a.fecha)}</td><td>${esc(a.frente)}</td><td>${esc(a.asistentes)}</td><td>${esc(a.compromisos)}</td></tr>`).join("")}</table>`:`<p class="empty">Aún no hay actas.</p>`}</div>
+    </div>
+  </div>`;
+}
+function formActa(){
+  if(!canWrite)return toast("Tu acceso es solo de consulta");
+  modal(`<h3>Acta del encuentro Kilómetro Cero</h3><p class="muted">La diligencia el copiloto al terminar.</p>
+  <div class="row2"><div><label class="l">Frente</label><select class="i" id="aF">${opts(FRENTES)}</select></div><div><label class="l">Fecha</label><input class="i" type="date" id="aD" value="${today()}"></div></div>
+  <div class="row2"><div><label class="l">Conductor</label><input class="i" id="aC" maxlength="60"></div><div><label class="l">Asistentes</label><input class="i" type="number" min="1" id="aA"></div></div>
+  <label class="l">Pregunta del mes y lo que salió</label><textarea class="i" id="aP" maxlength="400"></textarea>
+  <label class="l">Compromisos (máximo tres, con responsable y fecha)</label><textarea class="i" id="aK" maxlength="400"></textarea>
+  <label class="l">¿Se cumplieron los compromisos del mes anterior?</label><select class="i" id="aU">${opts(["Todos","Algunos","Ninguno","No había compromisos"])}</select>
+  <div class="err" id="eA"></div><div class="act"><button class="btn sec" data-x>Cancelar</button><button class="btn pri" id="sA">Guardar acta</button></div>`);
+  $("sA").onclick=()=>{const d={frente:$("aF").value,fecha:$("aD").value,conductor:$("aC").value.trim(),asistentes:Number($("aA").value),pregunta:$("aP").value.trim(),compromisos:$("aK").value.trim(),cumplimientoAnterior:$("aU").value};
+    if(!d.fecha||!d.conductor||!d.asistentes||!d.compromisos)return $("eA").textContent="Completa fecha, conductor, asistentes y compromisos.";
+    put("actas",null,d,"eA","Acta registrada")};
+}
+
+function speak(i,btn){
+  const ss=window.speechSynthesis;if(!ss){toast("El audio no está disponible en este navegador");return}
+  if(ss.speaking){ss.cancel();document.querySelectorAll(".play").forEach(b=>b.textContent="▶");return}
+  const u=new SpeechSynthesisUtterance(RADIO[i].g);u.lang="es-CO";
+  const v=ss.getVoices().find(x=>/^es/i.test(x.lang));if(v)u.voice=v;u.rate=1;
+  u.onend=u.onerror=()=>{btn.textContent="▶"};btn.textContent="■";ss.speak(u);
+}
+function vRadio(){
+  $("view").innerHTML=`<div class="grid g2" style="align-items:start">
+  <div class="box"><h3>Emisiones</h3><p class="muted">Nota de voz de 3 minutos que la gerencia envía cada lunes por la lista de difusión de WhatsApp de cada frente.${tts?"":" (La reproducción de audio no está disponible en este navegador.)"}</p>
+    ${RADIO.map((r,k)=>`<div class="ep"><button class="play" data-k="${k}" ${tts?"":"disabled"} title="Escuchar">▶</button><div><span class="muted">${esc(r.f)}</span><h4 style="margin:2px 0 4px">${esc(r.t)}</h4><p style="font-size:13px;margin:0">${esc(r.g)}</p></div></div>`).join("")}</div>
+  <div><div class="box"><h3>Estructura fija de cada emisión</h3><table class="t" style="margin-top:8px"><tr><th>Sección</th><th>Tiempo</th><th>Contenido</th></tr>
+    <tr><td>Así va la empresa</td><td>60 s</td><td>Licitaciones, avance del urbanismo y decisiones de la semana.</td></tr>
+    <tr><td>Las cuentas claras</td><td>45 s</td><td>Fecha real del próximo pago y explicación de cualquier retraso.</td></tr>
+    <tr><td>Respondemos al aire</td><td>45 s</td><td>Respuestas a las ideas del Peaje y a las preguntas enviadas por nota de voz.</td></tr>
+    <tr><td>Kilómetros de la semana</td><td>30 s</td><td>Reconocimiento a quienes recibieron fichas o alcanzaron una meta.</td></tr></table></div>
+  <div class="box" style="margin-top:16px"><h3>Generar el guion de esta semana</h3><p class="muted">Arma el borrador de «Respondemos al aire» y «Kilómetros de la semana» con los datos del portal.</p><textarea class="i" id="gu" style="min-height:190px;margin-top:8px"></textarea><div style="margin-top:8px;display:flex;gap:8px"><button class="btn nav" id="bGen">Generar</button><button class="btn sec" id="bCop">Copiar</button></div></div></div></div>`;
+  document.querySelectorAll(".play").forEach(b=>b.onclick=()=>speak(Number(b.dataset.k),b));
+  $("bGen").onclick=()=>{
+    const sem=D.ideas.filter(i=>(i.historial||[]).some(h=>days(h.f)<=7&&h.e!=="peaje"));
+    const ven=D.ideas.filter(vencida);const fich=D.fichas.filter(f=>days(f.fecha)<=7);
+    let t=`RESPONDEMOS AL AIRE\n`;t+=sem.length?sem.map(i=>`• ${i.texto} (${i.frente}): ${EST[i.estado].n.toLowerCase()}${i.estado==="verde"?`, responsable ${i.responsable}, fecha ${fmt(i.fechaCompromiso)}`:""}${i.estado==="rojo"?`. Razón: ${i.respuesta}`:""}.`).join("\n"):"• Esta semana no hubo respuestas nuevas.";
+    if(ven.length)t+=`\n• Tenemos ${ven.length} idea(s) con más de 15 días sin respuesta; nos comprometemos a responderlas antes del próximo lunes.`;
+    t+=`\n\nKILÓMETROS DE LA SEMANA\n`;t+=fich.length?fich.map(f=>`• ${f.de} reconoció a ${f.para} por ${f.motivo.toLowerCase()}.`).join("\n"):"• Esta semana no se entregaron fichas. ¡Reconozcan a sus compañeros!";
+    $("gu").value=t};
+  $("bCop").onclick=async()=>{try{await navigator.clipboard.writeText($("gu").value);toast("Guion copiado")}catch(e){toast("No se pudo copiar")}};
+}
+
+/* Peaje */
+function vPeaje(){
+  sub.fr=sub.fr||"Todos";
+  $("topact").innerHTML=`<button class="btn pri" id="bIdea">+ Pagar peaje (nueva idea)</button>`;$("bIdea").onclick=formIdea;
+  const vis=D.ideas.filter(i=>sub.fr==="Todos"||i.frente===sub.fr);
+  const ind=indicadores();
+  $("view").innerHTML=`<div class="grid g4" style="margin-bottom:14px">
+    <div class="box kpi"><b>${vis.length}</b><span>Ideas recibidas</span></div>
+    <div class="box kpi"><b>${ind[0].v??"–"}${ind[0].v!=null?" %":""}</b><span>Respuesta en 15 días o menos (meta ≥ 90 %)</span></div>
+    <div class="box kpi"><b>${ind[1].v??"–"}${ind[1].v!=null?" %":""}</b><span>Ideas implementadas (meta ≥ 25 %)</span></div>
+    <div class="box kpi"><b style="color:${vis.filter(vencida).length?"var(--red)":"var(--navy)"}">${vis.filter(vencida).length}</b><span>Con más de 15 días sin respuesta</span></div></div>
+  <div class="tabs">${["Todos",...FRENTES].map(f=>`<button class="chip${f===sub.fr?" on":""}" data-f="${f}">${f}</button>`).join("")}</div>
+  <div class="board">${ORDER.map(s=>{const it=vis.filter(i=>i.estado===s).sort((a,b)=>a.fechaIngreso<b.fechaIngreso?-1:1);return `<section class="col"><h2><span class="dot" style="background:${EST[s].c}"></span>${EST[s].n}<span class="n">${it.length}</span></h2><div class="list">${it.length?it.map(cardIdea).join(""):`<div class="empty">Sin ideas</div>`}</div></section>`}).join("")}</div>
+  <p class="muted" style="margin-top:12px">Regla del peaje: ninguna idea pasa más de 15 días sin respuesta. Verde exige responsable y fecha; rojo exige explicar la razón.</p>`;
+  document.querySelectorAll(".chip[data-f]").forEach(b=>b.onclick=()=>{sub.fr=b.dataset.f;render()});
+  document.querySelectorAll(".card[data-id]").forEach(c=>c.onclick=()=>resIdea(c.dataset.id));
+}
+function cardIdea(i){
+  const d=days(i.fechaIngreso);let tg=`<span class="tg">${esc(i.frente)}</span><span class="tg">${esc(i.tema)}</span>`;
+  if(i.estado==="peaje")tg+=vencida(i)?`<span class="tg alert">${d} días sin respuesta</span>`:`<span class="tg">Día ${d} de 15</span>`;
+  else if(i.fechaRespuesta){const t=days(i.fechaIngreso,i.fechaRespuesta);tg+=`<span class="tg ${t<=15?"ok":"alert"}">Respondida en ${t} días</span>`}
+  let r="";if(i.estado==="verde")r=`<b>Resp.:</b> ${esc(i.responsable)} · ${fmt(i.fechaCompromiso)}`;if(i.estado==="rojo")r=`<b>Razón:</b> ${esc(i.respuesta)}`;if(i.estado==="estudio"&&i.respuesta)r=esc(i.respuesta);if(i.estado==="hecha")r=`Implementada el ${fmt(i.fechaImplementada)}`;
+  return `<div class="card ${i.estado}" data-id="${esc(i.id)}"><div class="tt">${esc(i.texto)}</div><div class="m">${tg}</div>${r?`<div class="r">${r}</div>`:""}<div class="r muted">${i.anonima?"Anónima":esc(i.autor||"Sin nombre")} · ${esc(i.canal)}</div></div>`;
+}
+function formIdea(){
+  if(!canWrite)return toast("Tu acceso es solo de consulta");
+  modal(`<h3>Pagar peaje</h3><p class="muted">Registra una idea. Desde hoy corre el plazo de 15 días para responderla.</p>
+  <label class="l">¿Cuál es la idea?</label><textarea class="i" id="iT" maxlength="400"></textarea>
+  <div class="row2"><div><label class="l">Frente</label><select class="i" id="iF">${opts(FRENTES,sub.fr!=="Todos"?sub.fr:null)}</select></div><div><label class="l">Tema</label><select class="i" id="iC">${opts(TEMAS)}</select></div></div>
+  <div class="row2"><div><label class="l">Llegó por</label><select class="i" id="iN">${opts(CANALES)}</select></div><div><label class="l">Nombre (opcional)</label><input class="i" id="iA" maxlength="60"></div></div>
+  <label style="display:flex;gap:8px;align-items:center;margin-top:10px;font-weight:600;font-size:13px"><input type="checkbox" id="iX"> Registrar como anónima</label>
+  <div class="err" id="eI"></div><div class="act"><button class="btn sec" data-x>Cancelar</button><button class="btn pri" id="sI">Registrar idea</button></div>`);
+  $("sI").onclick=()=>{const t=$("iT").value.trim();if(t.length<8)return $("eI").textContent="Describe la idea con un poco más de detalle.";const an=$("iX").checked;
+    put("ideas",null,{texto:t,frente:$("iF").value,tema:$("iC").value,canal:$("iN").value,autor:an?"":$("iA").value.trim(),anonima:an,estado:"peaje",fechaIngreso:today(),historial:[{f:today(),e:"peaje",t:"Idea registrada"}]},"eI","Idea registrada")};
+}
+function resIdea(id){
+  const c=D.ideas.find(i=>i.id===id);if(!c)return;let ns=null;
+  const al={peaje:["estudio","verde","rojo"],estudio:["verde","rojo"],verde:["hecha","rojo"],rojo:["estudio"],hecha:[]}[c.estado];
+  modal(`<h3>${esc(c.texto)}</h3><p class="muted">${esc(c.frente)} · ${esc(c.tema)} · ${EST[c.estado].n}</p>
+  <label class="l">Nuevo estado</label><div class="states">${["estudio","verde","rojo","hecha"].map(s=>`<button class="st" data-s="${s}" ${al.includes(s)&&canWrite?"":"disabled"}><i style="background:${EST[s].c}"></i>${EST[s].n}</button>`).join("")}</div>
+  <div id="rf"></div><label class="l">Historial</label><div class="hist">${(c.historial||[]).map(h=>`<div><b>${fmt(h.f)}</b> · ${esc(EST[h.e]?.n||h.e)}: ${esc(h.t)}</div>`).join("")}</div>
+  <div class="err" id="eR"></div><div class="act"><button class="btn sec" data-x>Cerrar</button>${canWrite&&al.length?`<button class="btn pri" id="sR">Guardar respuesta</button>`:""}</div>`);
+  document.querySelectorAll(".st").forEach(b=>b.onclick=()=>{if(b.disabled)return;ns=b.dataset.s;document.querySelectorAll(".st").forEach(x=>x.classList.toggle("on",x===b));
+    $("rf").innerHTML=ns==="verde"?`<div class="row2"><div><label class="l">Responsable</label><input class="i" id="rP"></div><div><label class="l">Fecha de compromiso</label><input class="i" type="date" id="rD"></div></div>`:`<label class="l">${ns==="rojo"?"Razón (se explicará en Radio Vía)":"Comentario"}</label><textarea class="i" id="rT" maxlength="300"></textarea>`});
+  if($("sR"))$("sR").onclick=()=>{
+    if(!ns)return $("eR").textContent="Elige el nuevo estado.";const u={estado:ns};const r=($("rT")?.value||"").trim();
+    if(ns==="verde"){const p=$("rP").value.trim(),f=$("rD").value;if(!p||!f)return $("eR").textContent="La vía libre necesita responsable y fecha.";u.responsable=p;u.fechaCompromiso=f}
+    if(ns==="rojo"&&r.length<5)return $("eR").textContent="La regla del peaje exige explicar la razón.";
+    if(r)u.respuesta=r;if(ns==="hecha")u.fechaImplementada=today();if(!c.fechaRespuesta)u.fechaRespuesta=today();
+    u.historial=[...(c.historial||[]),{f:today(),e:ns,t:ns==="verde"?`Aprobada · ${u.responsable}`:(r||EST[ns].n)}];
+    const body={...c,...u};delete body.id;put("ideas",c.id,body,"eR","Respuesta guardada")};
+}
+
+/* Cambio de casco */
+function vCasco(){
+  $("topact").innerHTML=`<button class="btn pri" id="bBit">+ Registrar bitácora</button>`;$("bBit").onclick=formBitacora;
+  const rot=[["Director de maquinaria","Planta de asfalto"],["Director de proyectos","Mina"],["Director administrativo y financiero","Obras"],["Director de talento humano","Mina"],["Coordinador SST","Oficinas"],["Gerente","Obras"]];
+  const bits=[...D.bitacoras].sort((a,b)=>a.fecha<b.fecha?1:-1);
+  $("view").innerHTML=`<div class="grid g2" style="align-items:start">
+  <div class="box"><h3>Rotación de este mes</h3><p class="muted">Cada directivo pasa una jornada completa en un frente distinto al suyo, acompañando a un Maestro de Vía. No opera maquinaria; observa, pregunta y acompaña. Ese mismo día participa en el encuentro Kilómetro Cero del frente.</p>
+    <table class="t" style="margin-top:8px"><tr><th>Directivo</th><th>Frente asignado</th><th>Fecha</th></tr>${rot.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${fmt(encuentroDe(r[1],mes()))}</td></tr>`).join("")}</table>
+    <h4>Guía del día</h4><table class="t"><tr><th>Hora</th><th>Actividad</th></tr><tr><td>6:00</td><td>Llegada al frente, inducción de seguridad y entrega de EPP.</td></tr><tr><td>6:30</td><td>Encuentro Kilómetro Cero (presenta «Así va la empresa»).</td></tr><tr><td>7:00–12:00</td><td>Acompañamiento al Maestro de Vía en sus tareas.</td></tr><tr><td>12:00</td><td>Almuerzo con el equipo, en el mismo lugar que ellos.</td></tr><tr><td>13:00–16:00</td><td>Recorrido por otras tareas del frente y conversación con el equipo.</td></tr><tr><td>16:00</td><td>Registro de la bitácora: un aprendizaje y un compromiso.</td></tr></table></div>
+  <div><div class="box"><h3>Señales de tránsito del comité semanal</h3><p class="muted">Cada director tiene las cuatro tarjetas y puede levantarlas en cualquier momento.</p>
+    <div class="signs" style="margin-top:12px">
+    <div class="sg"><div class="shape oct">PARE</div><p><b>Pare:</b> alguien interrumpe o descalifica.</p></div>
+    <div class="sg"><div class="shape tri">CEDA EL<br>PASO</div><p><b>Ceda el paso:</b> quien más ha hablado deja intervenir a otro.</p></div>
+    <div class="sg"><div class="shape dia"><span>DESVÍO</span></div><p><b>Desvío:</b> el tema se sale de la agenda.</p></div>
+    <div class="sg"><div class="shape cir">VÍA<br>LIBRE</div><p><b>Vía libre:</b> hay acuerdo con responsable y fecha.</p></div></div></div>
+  <div class="box" style="margin-top:16px"><h3>Revisión técnico-mecánica del liderazgo</h3><p>Cada seis meses los trabajadores evalúan de forma anónima a su jefe directo con cinco preguntas. Resultado: aprobado, aprobado con observaciones o no aprobado.</p><p style="margin-top:8px"><a class="btn nav" href="#encuestas" style="text-decoration:none;display:inline-block">Ver formulario</a></p></div></div></div>
+  <div class="box" style="margin-top:16px"><h3>Bitácoras del casco</h3>${bits.length?`<table class="t" style="margin-top:8px"><tr><th>Fecha</th><th>Directivo</th><th>Frente · Maestro de Vía</th><th>Aprendizaje</th><th>Compromiso</th><th>Estado</th></tr>${bits.map(b=>`<tr><td>${fmt(b.fecha)}</td><td>${esc(b.directivo)}</td><td>${esc(b.frente)} · ${esc(b.maestro)}</td><td>${esc(b.aprendizaje)}</td><td>${esc(b.compromiso)}</td><td>${b.cumplido===true?`<span class="pill g">Cumplido</span>`:b.cumplido===false?`<span class="pill r">No cumplido</span>`:`<span class="pill y">Por verificar</span>${canWrite?` <button class="btn sec" style="padding:3px 8px;font-size:11px" data-ok="${esc(b.id)}">Cumplido</button>`:""}`}</td></tr>`).join("")}</table>`:`<p class="empty">Aún no hay bitácoras.</p>`}</div>`;
+  document.querySelectorAll("[data-ok]").forEach(b=>b.onclick=()=>{const x=D.bitacoras.find(y=>y.id===b.dataset.ok);const body={...x,cumplido:true};delete body.id;put("bitacoras",x.id,body,null,"Compromiso marcado como cumplido")});
+}
+function formBitacora(){
+  if(!canWrite)return toast("Tu acceso es solo de consulta");
+  modal(`<h3>Bitácora del casco</h3><p class="muted">Se registra al final de la jornada en el frente.</p>
+  <div class="row2"><div><label class="l">Directivo</label><input class="i" id="bD" maxlength="60"></div><div><label class="l">Frente</label><select class="i" id="bF">${opts(FRENTES)}</select></div></div>
+  <div class="row2"><div><label class="l">Maestro de Vía</label><input class="i" id="bM" maxlength="60"></div><div><label class="l">Fecha</label><input class="i" type="date" id="bT" value="${today()}"></div></div>
+  <label class="l">¿Qué aprendí hoy?</label><textarea class="i" id="bA" maxlength="300"></textarea>
+  <label class="l">¿A qué me comprometo?</label><textarea class="i" id="bC" maxlength="300"></textarea>
+  <div class="err" id="eB"></div><div class="act"><button class="btn sec" data-x>Cancelar</button><button class="btn pri" id="sB">Guardar</button></div>`);
+  $("sB").onclick=()=>{const d={directivo:$("bD").value.trim(),frente:$("bF").value,maestro:$("bM").value.trim(),fecha:$("bT").value,aprendizaje:$("bA").value.trim(),compromiso:$("bC").value.trim(),cumplido:null};
+    if(!d.directivo||!d.aprendizaje||!d.compromiso)return $("eB").textContent="Completa directivo, aprendizaje y compromiso.";put("bitacoras",null,d,"eB","Bitácora registrada")};
+}
+
+/* Junta */
+function vJunta(){
+  $("topact").innerHTML=`<button class="btn pri" id="bRec">+ Nueva recomendación</button>`;$("bRec").onclick=formRec;
+  const rec=[...D.recomendaciones].sort((a,b)=>a.fecha<b.fecha?1:-1);
+  const lab={analisis:["En análisis","y"],incorporada:["Incorporada","g"],no:["No incorporada","r"]};
+  $("view").innerHTML=`<div class="grid g2" style="align-items:start">
+  <div class="box"><h3>Integrantes del periodo</h3><p class="muted">Dos por frente, elegidos por sus compañeros: uno con más de diez años en la empresa y otro con menos antigüedad. Rotan cada seis meses.</p>
+    <table class="t" style="margin-top:8px"><tr><th>Frente</th><th>Con experiencia</th><th>Nueva generación</th></tr>${JUNTA.map(j=>`<tr><td>${j.fr}</td><td>${j.a}</td><td>${j.b}</td></tr>`).join("")}</table></div>
+  <div class="box"><h3>Cómo funciona</h3><p><b>Sesión:</b> una reunión mensual de dos horas con la gerencia, en la semana siguiente a los encuentros Kilómetro Cero.</p><p><b>Qué revisa:</b> los proyectos de urbanismo antes de su aprobación (parques industriales, vivienda y bodegas).</p><p><b>Silla de la vía:</b> cada mes un integrante asiste al comité semanal de directores, con voz pero sin voto.</p><p><b>Regla:</b> la gerencia responde cada recomendación en la sesión siguiente: la incorpora o explica por qué no.</p></div></div>
+  <div class="box" style="margin-top:16px"><h3>Recomendaciones de la Junta</h3>${rec.length?`<table class="t" style="margin-top:8px"><tr><th>Fecha</th><th>Proyecto</th><th>Recomendación</th><th>Propuesta por</th><th>Estado</th><th>Respuesta de la gerencia</th></tr>${rec.map(r=>`<tr><td>${fmt(r.fecha)}</td><td>${esc(r.proyecto)}</td><td>${esc(r.texto)}</td><td>${esc(r.frente)}</td><td><span class="pill ${lab[r.estado][1]}">${lab[r.estado][0]}</span>${canWrite&&r.estado==="analisis"?`<div style="margin-top:6px;display:flex;gap:4px"><button class="btn sec" style="padding:3px 7px;font-size:11px" data-r="${esc(r.id)}" data-s="incorporada">Incorporar</button><button class="btn sec" style="padding:3px 7px;font-size:11px" data-r="${esc(r.id)}" data-s="no">No</button></div>`:""}</td><td>${esc(r.respuesta||"")}</td></tr>`).join("")}</table>`:`<p class="empty">Aún no hay recomendaciones.</p>`}</div>`;
+  document.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{const x=D.recomendaciones.find(y=>y.id===b.dataset.r);
+    modal(`<h3>${b.dataset.s==="incorporada"?"Incorporar recomendación":"No incorporar"}</h3><p class="muted">${esc(x.texto)}</p><label class="l">Respuesta de la gerencia</label><textarea class="i" id="rr" maxlength="300"></textarea><div class="err" id="eQ"></div><div class="act"><button class="btn sec" data-x>Cancelar</button><button class="btn pri" id="sQ">Guardar</button></div>`);
+    $("sQ").onclick=()=>{const t=$("rr").value.trim();if(t.length<5)return $("eQ").textContent="Escribe la respuesta.";const body={...x,estado:b.dataset.s,respuesta:t};delete body.id;put("recomendaciones",x.id,body,"eQ","Respuesta registrada")}});
+}
+function formRec(){
+  if(!canWrite)return toast("Tu acceso es solo de consulta");
+  modal(`<h3>Nueva recomendación de la Junta</h3>
+  <label class="l">Proyecto</label><input class="i" id="qP" maxlength="80" placeholder="Ej.: Parque industrial – etapa 1">
+  <label class="l">Recomendación</label><textarea class="i" id="qT" maxlength="400"></textarea>
+  <label class="l">Frente que la propone</label><select class="i" id="qF">${opts(FRENTES)}</select>
+  <div class="err" id="eQ"></div><div class="act"><button class="btn sec" data-x>Cancelar</button><button class="btn pri" id="sQ">Registrar</button></div>`);
+  $("sQ").onclick=()=>{const d={proyecto:$("qP").value.trim(),texto:$("qT").value.trim(),frente:$("qF").value,estado:"analisis",fecha:today()};if(!d.proyecto||d.texto.length<8)return $("eQ").textContent="Completa el proyecto y la recomendación.";put("recomendaciones",null,d,"eQ","Recomendación registrada")};
+}
+
+/* Kilómetros */
+function vKm(){
+  $("topact").innerHTML=`<button class="btn pri" id="bFi">+ Entregar ficha de peaje</button>`;$("bFi").onclick=formFicha;
+  const ps=personas();sub.p=sub.p&&ps.some(p=>norm(p.n)===norm(sub.p))?sub.p:(ps[0]?.n||"");
+  const km=kmDe(sub.p);const sig=HITOS.find(h=>h.km>km);const pct=Math.min(100,km/300*100);
+  const recientes=[...D.fichas].sort((a,b)=>a.fecha<b.fecha?1:-1).slice(0,8);
+  $("view").innerHTML=`<div class="grid g2" style="align-items:start">
+  <div><div class="pass"><h3>Pasaporte de Vía</h3><div class="row2" style="margin-top:6px"><div><label class="l" style="color:#fff">Consultar el pasaporte de</label><select class="i" id="pSel">${ps.map(p=>`<option${norm(p.n)===norm(sub.p)?" selected":""}>${esc(p.n)}</option>`).join("")}</select></div><div style="text-align:right"><b style="font-size:40px;font-weight:800;color:var(--yellow)">${km}</b><div style="font-size:12px;opacity:.8">kilómetros</div></div></div>
+    <div class="bar"><div style="width:${pct}%"></div></div><div style="font-size:12px;opacity:.85">${sig?`Faltan ${sig.km-km} km para: ${sig.t}`:"¡Recorrió todas las metas!"}</div>
+    <div class="hitos">${HITOS.map(h=>`<div class="hito ${km>=h.km?"ok":""}"><b>Km ${h.km}</b>${h.t}</div>`).join("")}</div></div>
+    <div class="box" style="margin-top:16px"><h3>Reglas del juego</h3><p>Cada trabajador recibe <b>3 fichas al mes</b> para entregar a compañeros que se destaquen en seguridad, cuidado de los equipos, ayuda a otros o ideas de mejora. Cada ficha vale <b>10 km</b> y cada idea propia que pasa a verde en el Peaje suma <b>20 km</b>. No se pueden dar fichas a uno mismo ni al jefe directo.</p></div></div>
+  <div><div class="box"><h3>Tabla de la vía</h3><table class="t" style="margin-top:8px"><tr><th>#</th><th>Persona</th><th>Frente</th><th>Km</th></tr>${ps.slice(0,10).map((p,k)=>`<tr><td>${k+1}</td><td>${esc(p.n)}</td><td>${esc(p.fr||"")}</td><td><b>${p.km}</b></td></tr>`).join("")||`<tr><td colspan="4" class="empty">Aún no hay kilómetros.</td></tr>`}</table></div>
+  <div class="box" style="margin-top:16px"><h3>Fichas recientes</h3>${recientes.map(f=>`<p style="font-size:13px;border-bottom:1px solid var(--line);padding:6px 0"><b>${esc(f.de)}</b> → <b>${esc(f.para)}</b> · <span class="pill">${esc(f.motivo)}</span><br><span class="muted">«${esc(f.mensaje)}» · ${fmt(f.fecha)}</span></p>`).join("")||`<p class="empty">Aún no hay fichas.</p>`}</div>
+  <div class="box" style="margin-top:16px"><h3>Mojones de lealtad del año</h3><table class="t" style="margin-top:8px"><tr><th>Trabajador</th><th>Frente</th><th>Años</th></tr>${MOJONES.map(m=>`<tr><td>${m.p}</td><td>${m.fr}</td><td><b>${m.a}</b></td></tr>`).join("")}</table></div></div></div>`;
+  $("pSel")&&($("pSel").onchange=e=>{sub.p=e.target.value;render()});
+}
+function formFicha(){
+  if(!canWrite)return toast("Tu acceso es solo de consulta");
+  modal(`<h3>Entregar ficha de peaje</h3><p class="muted">+10 km para tu compañero. Tienes 3 fichas al mes.</p>
+  <div class="row2"><div><label class="l">Quién la entrega</label><input class="i" id="fD" maxlength="60"></div><div><label class="l">Para quién</label><input class="i" id="fP" maxlength="60" list="pl"><datalist id="pl">${personas().map(p=>`<option>${esc(p.n)}</option>`).join("")}</datalist></div></div>
+  <div class="row2"><div><label class="l">Frente de quien la recibe</label><select class="i" id="fF">${opts(FRENTES)}</select></div><div><label class="l">Motivo</label><select class="i" id="fM">${opts(MOTIVOS)}</select></div></div>
+  <label class="l">¿Por qué se la das? (una frase)</label><input class="i" id="fT" maxlength="140">
+  <div class="err" id="eF"></div><div class="act"><button class="btn sec" data-x>Cancelar</button><button class="btn pri" id="sF">Entregar ficha</button></div>`);
+  $("sF").onclick=()=>{const d={de:$("fD").value.trim(),para:$("fP").value.trim(),frentePara:$("fF").value,motivo:$("fM").value,mensaje:$("fT").value.trim(),fecha:today()};
+    if(!d.de||!d.para||!d.mensaje)return $("eF").textContent="Completa quién entrega, quién recibe y por qué.";
+    if(norm(d.de)===norm(d.para))return $("eF").textContent="No puedes darte una ficha a ti mismo.";
+    const usadas=D.fichas.filter(f=>norm(f.de)===norm(d.de)&&mes(f.fecha)===mes()).length;if(usadas>=3)return $("eF").textContent="Ya entregaste tus 3 fichas de este mes.";
+    put("fichas",null,d,"eF","Ficha entregada: +10 km")};
+}
+
+/* Encuestas */
+function vEnc(){
+  const F=[["formClima","¿Vamos en la misma vía?","Encuesta de clima: comunicación, escucha, reconocimiento, confianza y participación. 12 afirmaciones y 2 preguntas abiertas.","Mes 1 y luego cada trimestre","Indicador 4"],["formLiderazgo","Revisión técnico-mecánica del liderazgo","Evaluación anónima del jefe directo con 5 preguntas y un resultado: aprobado, con observaciones o no aprobado.","Meses 1, 6 y 12","Indicador 3"],["formActa","Acta del encuentro Kilómetro Cero","Registro que llena el copiloto al terminar cada encuentro mensual.","Cada encuentro","Indicador 7"]];
+  $("view").innerHTML=`<div class="grid g3">${F.map(f=>`<div class="box"><h3>${f[1]}</h3><p class="muted">${f[3]} · ${f[4]}</p><p>${f[2]}</p><p style="margin-top:10px">${CFG[f[0]]?`<a class="btn pri" style="text-decoration:none;display:inline-block" href="${esc(CFG[f[0]])}" target="_blank" rel="noopener">Responder en Google Forms</a>`:`<span class="pill y">Enlace pendiente</span>`}</p></div>`).join("")}</div>
+  <p class="muted" style="margin-top:10px">Ninguna encuesta pide nombre ni correo. Para quienes no usan celular se imprimen copias y se depositan en una urna.</p>
+  ${canAdmin?`<div class="box" style="margin-top:16px"><h3>Configuración (solo administradores)</h3><p class="muted">Pega aquí los enlaces de Google Forms y registra los resultados de cada medición.</p>
+   <label class="l">Enlace · ¿Vamos en la misma vía?</label><input class="i" id="c1" value="${esc(CFG.formClima||"")}">
+   <label class="l">Enlace · Revisión técnico-mecánica</label><input class="i" id="c2" value="${esc(CFG.formLiderazgo||"")}">
+   <label class="l">Enlace · Acta del Kilómetro Cero</label><input class="i" id="c3" value="${esc(CFG.formActa||"")}">
+   <div class="grid g5" style="margin-top:4px">
+    <div><label class="l">Clima: línea base (%)</label><input class="i" type="number" id="c4" value="${esc(CFG.climaBase??"")}"></div>
+    <div><label class="l">Clima: última medición (%)</label><input class="i" type="number" id="c5" value="${esc(CFG.climaActual??"")}"></div>
+    <div><label class="l">Liderazgo: línea base (%)</label><input class="i" type="number" id="c6" value="${esc(CFG.liderazgoBase??"")}"></div>
+    <div><label class="l">Liderazgo: última (%)</label><input class="i" type="number" id="c7" value="${esc(CFG.liderazgoActual??"")}"></div>
+    <div><label class="l">Total de trabajadores</label><input class="i" type="number" id="c8" value="${esc(CFG.totalTrabajadores??170)}"></div></div>
+   <div class="err" id="eC"></div><button class="btn nav" id="sC">Guardar configuración</button></div>`:""}`;
+  if($("sC"))$("sC").onclick=async()=>{const ok=u=>!u||/^https:\/\//.test(u);const d={formClima:$("c1").value.trim(),formLiderazgo:$("c2").value.trim(),formActa:$("c3").value.trim(),climaBase:$("c4").value,climaActual:$("c5").value,liderazgoBase:$("c6").value,liderazgoActual:$("c7").value,totalTrabajadores:$("c8").value||170};
+    if(![d.formClima,d.formLiderazgo,d.formActa].every(ok))return $("eC").textContent="Los enlaces deben empezar por https://";
+    try{if(demo){CFG={...CFG,...d};persist()}else{await db.doc("config/portal").set(d)}toast("Configuración guardada");if(demo)render()}catch(e){$("eC").textContent=errMsg(e)}};
+}
+
+/* Indicadores */
+function vInd(){
+  const I=indicadores();
+  $("view").innerHTML=`<div class="grid g3">${I.map((x,k)=>{const ok=x.v!=null&&x.v>=x.meta;return `<div class="box ind ${x.v==null?"":ok?"ok":"no"}"><span class="muted">Indicador ${k+1} · ${x.fr}</span><h3 style="margin:2px 0 6px">${x.n}</h3><b class="v">${x.v==null?"–":(x.u===" p. p."&&x.v>0?"+":"")+x.v+x.u}</b><p class="muted">Meta: ${x.u===" p. p."?"+":"≥ "}${x.meta}${x.u} · ${x.v==null?"sin datos":ok?"cumple":"no cumple aún"}</p><p style="font-size:12.5px;margin-top:6px">${x.f}</p>${x.extra?`<p class="muted">${esc(x.extra)}</p>`:""}<p class="muted">Fuente: ${x.src}</p></div>`}).join("")}</div>`;
+}
+
+/* ---------- modal y datos ---------- */
+function modal(h){$("md").innerHTML=h;$("ov").classList.add("on");$("md").querySelectorAll("[data-x]").forEach(b=>b.onclick=closeM);const f=$("md").querySelector("input,textarea");if(f)f.focus()}
+function closeM(){$("ov").classList.remove("on")}
+$("ov").addEventListener("click",e=>{if(e.target===$("ov"))closeM()});
+function errMsg(e){const c=e&&e.code;if(c==="quota_exceeded")return"La base de datos está llena.";if(c==="invalid_argument"){canWrite=false;canAdmin=false;$("ro").classList.remove("hide");return"Tu acceso no permite guardar cambios."}return"No se pudo guardar. Intenta de nuevo."}
+async function put(colName,id,data,errId,okMsg){
+  const btn=$("md").querySelector(".btn.pri");if(btn)btn.disabled=true;
+  try{
+    if(demo){if(id)D[colName]=D[colName].map(x=>x.id===id?{...data,id}:x);else D[colName].push({...data,id:"d"+Date.now()});persist();render()}
+    else{if(id)await db.collection(colName).doc(id).set(data);else await db.collection(colName).add(data)}
+    closeM();render();toast(okMsg);
+  }catch(e){if(errId&&$(errId))$(errId).textContent=errMsg(e);else toast(errMsg(e))}
+  if(btn)btn.disabled=false;
+}
+const SEED={"ideas": [{"id": "ej1", "texto": "Cambiar el orden de cargue de las volquetas en la mañana para evitar filas en la planta", "frente": "Planta de asfalto", "tema": "Procesos y productividad", "canal": "Encuentro Kilómetro Cero", "autor": "Operario de cargue", "anonima": false, "estado": "verde", "responsable": "Jefe de planta", "fechaCompromiso": "2026-11-28", "fechaIngreso": "2026-11-06", "fechaRespuesta": "2026-11-12", "historial": [{"f": "2026-11-06", "e": "peaje", "t": "Idea registrada"}, {"f": "2026-11-12", "e": "verde", "t": "Aprobada"}]}, {"id": "ej2", "texto": "Instalar un toldo en la zona de almuerzo de la planta", "frente": "Planta de asfalto", "tema": "Bienestar", "canal": "Buzón", "autor": "", "anonima": true, "estado": "estudio", "respuesta": "Talento humano cotiza materiales con lo que hay en bodega", "fechaIngreso": "2026-11-09", "fechaRespuesta": "2026-11-15", "historial": [{"f": "2026-11-09", "e": "peaje", "t": "Idea registrada"}]}, {"id": "ej3", "texto": "Revisar el turno de mantenimiento de la finisher para que no coincida con la producción", "frente": "Obras", "tema": "Cuidado de equipos", "canal": "Nota de voz", "autor": "Operador de finisher", "anonima": false, "estado": "peaje", "fechaIngreso": "2026-10-31", "historial": [{"f": "2026-10-31", "e": "peaje", "t": "Idea registrada"}]}, {"id": "ej4", "texto": "Comprar una trituradora nueva para la mina", "frente": "Mina", "tema": "Procesos y productividad", "canal": "Encuentro Kilómetro Cero", "autor": "Operario de mina", "anonima": false, "estado": "rojo", "respuesta": "Por la situación de caja no es posible este año; se revisará al iniciar los proyectos de urbanismo", "fechaIngreso": "2026-10-29", "fechaRespuesta": "2026-11-10", "historial": [{"f": "2026-10-29", "e": "peaje", "t": "Idea registrada"}]}, {"id": "ej5", "texto": "Señalizar mejor la vía interna de la mina en la zona de retorno de volquetas", "frente": "Mina", "tema": "Seguridad", "canal": "Encuentro Kilómetro Cero", "autor": "Conductor", "anonima": false, "estado": "hecha", "responsable": "Coordinador SST", "fechaIngreso": "2026-10-19", "fechaRespuesta": "2026-10-25", "fechaImplementada": "2026-11-13", "historial": [{"f": "2026-10-19", "e": "peaje", "t": "Idea registrada"}]}, {"id": "ej6", "texto": "Que los operarios con experiencia revisen los planos del primer parque industrial antes de cotizar", "frente": "Obras", "tema": "Nuevos proyectos de urbanismo", "canal": "Portal", "autor": "Maestro de Vía", "anonima": false, "estado": "peaje", "fechaIngreso": "2026-11-15", "historial": [{"f": "2026-11-15", "e": "peaje", "t": "Idea registrada"}]}, {"id": "ej7", "texto": "Enviar por WhatsApp la programación de pagos con anticipación", "frente": "Oficinas", "tema": "Bienestar", "canal": "Nota de voz", "autor": "", "anonima": true, "estado": "verde", "responsable": "Gerente administrativo", "fechaCompromiso": "2026-11-23", "fechaIngreso": "2026-11-11", "fechaRespuesta": "2026-11-16", "historial": [{"f": "2026-11-11", "e": "peaje", "t": "Idea registrada"}]}], "actas": [{"id": "a1", "frente": "Mina", "fecha": "2026-11-02", "conductor": "Jefe de mina", "asistentes": 34, "compromisos": "1. Revisar frenos de dos volquetas (jefe de taller, 13 nov). 2. Coordinar horarios de cargue con planta (jefe de mina, 20 nov)."}, {"id": "a2", "frente": "Planta de asfalto", "fecha": "2026-11-03", "conductor": "Jefe de planta", "asistentes": 22, "compromisos": "1. Cotizar toldo con materiales de bodega (talento humano, 17 nov). 2. Nuevo orden de cargue a prueba (jefe de planta, 28 nov)."}, {"id": "a3", "frente": "Obras", "fecha": "2026-11-04", "conductor": "Residente de obra", "asistentes": 41, "compromisos": "1. Reforzar señalización del desvío (coordinador SST, 10 nov)."}], "bitacoras": [{"id": "b1", "directivo": "Director de proyectos", "frente": "Mina", "maestro": "Operario de cargue (24 años)", "fecha": "2026-11-02", "aprendizaje": "El cargue se detiene casi una hora diaria porque la mina no sabe cuándo la planta necesita material.", "compromiso": "Crear un grupo de coordinación entre mina y planta con reporte de necesidades cada mañana.", "cumplido": true}, {"id": "b2", "directivo": "Director de maquinaria", "frente": "Planta de asfalto", "maestro": "Operador de planta (18 años)", "fecha": "2026-11-03", "aprendizaje": "Los operadores conocen fallas de los equipos antes que el taller, pero no tienen a quién reportarlas.", "compromiso": "Incluir un reporte de fallas de los operadores en el mantenimiento semanal.", "cumplido": null}], "recomendaciones": [{"id": "r1", "proyecto": "Parque industrial – etapa 1", "texto": "Usar el material de la propia mina para la base de las vías internas del parque.", "frente": "Mina", "estado": "incorporada", "respuesta": "Se incluye en el presupuesto de la propuesta y reduce el costo de materiales.", "fecha": "2026-11-09"}, {"id": "r2", "proyecto": "Parque industrial – etapa 1", "texto": "Programar la pavimentación de las vías internas antes de la temporada de lluvias.", "frente": "Obras", "estado": "analisis", "fecha": "2026-11-09"}, {"id": "r3", "proyecto": "Bodegas en Villavicencio", "texto": "Comprar una planta de concreto propia para el proyecto.", "frente": "Planta de asfalto", "estado": "no", "respuesta": "Por la situación de caja se alquilará; se revisará si llegan más proyectos.", "fecha": "2026-11-09"}], "fichas": [{"id": "f0", "de": "Luis", "para": "Jorge", "frentePara": "Mina", "motivo": "Seguridad", "mensaje": "Avisó a tiempo de una falla en el freno de la volqueta", "fecha": "2026-11-05"}, {"id": "f1", "de": "Ana", "para": "Jorge", "frentePara": "Mina", "motivo": "Ayuda a otros", "mensaje": "Le enseñó al compañero nuevo a operar el cargador", "fecha": "2026-11-10"}, {"id": "f2", "de": "Pedro", "para": "Marta", "frentePara": "Planta de asfalto", "motivo": "Idea de mejora", "mensaje": "Propuso el nuevo orden de cargue", "fecha": "2026-11-07"}, {"id": "f3", "de": "Jorge", "para": "Marta", "frentePara": "Planta de asfalto", "motivo": "Cuidado de los equipos", "mensaje": "Dejó la planta limpia y revisada para el siguiente turno", "fecha": "2026-11-12"}, {"id": "f4", "de": "Carlos", "para": "Diana", "frentePara": "Oficinas", "motivo": "Ayuda a otros", "mensaje": "Ayudó a todos a entender su desprendible de pago", "fecha": "2026-11-13"}, {"id": "f5", "de": "Marta", "para": "Luis", "frentePara": "Obras", "motivo": "Seguridad", "mensaje": "Detuvo la obra cuando vio un peatón en el desvío", "fecha": "2026-11-14"}, {"id": "f6", "de": "Diana", "para": "Jorge", "frentePara": "Mina", "motivo": "Idea de mejora", "mensaje": "Su idea de señalizar el retorno ya se hizo", "fecha": "2026-11-16"}, {"id": "f7", "de": "Ana", "para": "Luis", "frentePara": "Obras", "motivo": "Cuidado de los equipos", "mensaje": "Reportó a tiempo la fuga de la motoniveladora", "fecha": "2026-11-17"}]};
+const KEY="en-la-misma-via-v1";
+function demoData(){
+  let saved=null;try{saved=JSON.parse(localStorage.getItem(KEY)||"null")}catch(e){}
+  if(saved&&saved.D){D=saved.D;CFG=saved.CFG||{}}else{D=JSON.parse(JSON.stringify(SEED));CFG={inicioPrograma:"2026-11",totalTrabajadores:170}}
+}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify({D,CFG}))}catch(e){}}
+
+/* ---------- arranque ---------- */
+route();
+tts=("speechSynthesis" in window)?{}:null;
+demo=true;demoData();$("demo").classList.remove("hide");render();
+document.addEventListener("click",e=>{if(e.target&&e.target.id==="bReset"){if(e.target.dataset.sure!=="1"){e.target.dataset.sure="1";e.target.textContent="¿Seguro? Toca de nuevo";return}try{localStorage.removeItem(KEY)}catch(x){}D=JSON.parse(JSON.stringify(SEED));CFG={inicioPrograma:"2026-11",totalTrabajadores:170};e.target.dataset.sure="";e.target.textContent="Restablecer datos de ejemplo";render();toast("Datos de ejemplo restablecidos")}});
+</script>
+</body>
+</html>
